@@ -12,6 +12,7 @@ const PressableButton = ({onPress, bgColor, title, textColor} : PressableButtonP
   return (
     <StyledPressableButton
         bgColor={bgColor}
+        onPress={onPress}
     >
         <StyledPressableButtonText
             color={textColor}

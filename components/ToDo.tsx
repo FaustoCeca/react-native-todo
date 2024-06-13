@@ -1,23 +1,35 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import { View, Text } from 'react-native'
 import { DoneText, StyledToDoItem } from '@/styles/StyledToDoList';
 
 interface ToDoProps {
+    id: number;
     title: string;
     description: string;
     done: boolean;
+    onPress: () => void;
 }
 
-const ToDo = ({title, description, done}: ToDoProps) => {
+const ToDo = ({title, description, done, onPress}: ToDoProps) => {
+
   return (
     <StyledToDoItem
         done={done}
+        onPress={onPress}
     >
         <View>
-            <Text>
+            <Text
+                style={{
+                    textDecorationLine: done ? 'line-through' : 'none'
+                }}
+            >
                 {title}
             </Text>
-            <Text>
+            <Text
+                style={{
+                    textDecorationLine: done ? 'line-through' : 'none'
+                }}
+            >
                 {description}
             </Text>
         </View>

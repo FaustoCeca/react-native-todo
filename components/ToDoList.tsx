@@ -1,7 +1,9 @@
-import { View, Text, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, useColorScheme } from 'react-native'
+import React, { useRef, useState } from 'react'
 import { StyledToDoList } from '@/styles/StyledToDoList';
 import ToDo from './ToDo';
+import PressableButton from './PressableButton';
+import { useGlobalContext } from '@/context/GlobalContext';
 
 interface ToDo {
     id: number;
@@ -11,45 +13,52 @@ interface ToDo {
 }
 
 const ToDoList = () => {
-    const [todos, setTodos] = useState<ToDo[]>([
-    {
-        id: 1,
-        title: 'Task 1',
-        description: 'Description 1',
-        done: false
-    },
-    {
-        id: 2,
-        title: 'Task 2',
-        description: 'Description 2',
-        done: false
-    }, 
-    {
-        id: 3,
-        title: 'Task 3',
-        description: 'Description 3',
-        done: false
-    }, 
-    {
-        id: 4,
-        title: 'Task 4',
-        description: 'Description 4',
-        done: false
-    },
-    ]);
+    const { todos, setTodos, refTodos } = useGlobalContext();
+    const colorScheme = useColorScheme();
+
+    const handleDone = (id: number) => {
+        setTodos(todos.map((todo) => todo.id === id ? {...todo, done: !todo.done} : todo));
+
+        setTimeout(() => {
+            setTodos(todos.filter((todo) => todo.id !== id));
+        }, 1000);
+    }
 
   return (
-    <StyledToDoList 
-        data={todos}
-        keyExtractor={(item: ToDo) => item.id.toString()}
-        renderItem={({ item }: { item: ToDo }) => (
-            <ToDo 
-                done={item.done}
-                title={item.title}
-                description={item.description}
-            />
-        )}
-    />
+    <>
+        <StyledToDoList 
+            data={todos}
+            keyExtractor={(item: ToDo, index: number) => item.id.toString()}
+            renderItem={
+                ({ item }: { item: ToDo }) => (
+                <ToDo 
+                    id={item.id}
+                    onPress={() => handleDone(item.id)}
+                    done={item.done}
+                    title={item.title}
+                    description={item.description}
+                />
+            )}
+        />
+        {
+            todos.length === 0 && (
+                <View
+                    style={{
+                        flex: 1,
+                        alignItems: 'center'
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: colorScheme === 'dark' ? '#f0f0f0' : '#333'
+                        }}
+                    >
+                        Try to create a new task!
+                    </Text>
+                </View>
+            )
+        }
+    </>
   )
 }
 

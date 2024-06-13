@@ -1,7 +1,9 @@
+import React from "react";
 import PressableButton from "@/components/PressableButton";
 import ToDoList from "@/components/ToDoList";
 import { PrincipalTitle, StyledViewHome } from "@/styles/StyledViewHome";
-import { Alert, Text, View, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
+import { Link } from "expo-router";
 
 export default function Index() {
   const colorScheme = useColorScheme();
@@ -19,18 +21,22 @@ export default function Index() {
       >
         Todo App RN!
       </PrincipalTitle>
-      <PressableButton
-        textColor={
-          colorScheme === 'dark' ? '#333' : '#f0f0f0'
-        } 
-        title="Create new task!"
-        bgColor={
-          colorScheme === 'dark' ? '#f0f0f0' : '#333'
-        }
-        onPress={() => {
-          Alert.alert('Create new task!');
-        }}
-      />
+      <Link
+        href={'/create'}
+        asChild
+      >
+        <PressableButton
+          textColor={
+            colorScheme === 'dark' ? '#333' : '#f0f0f0'
+          } 
+          title="Create new task!"
+          bgColor={
+            colorScheme === 'dark' ? '#f0f0f0' : '#333'
+          }
+          onPress={() => {
+          }}
+        />
+      </Link>
       <ToDoList 
         
       />
